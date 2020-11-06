@@ -2,6 +2,7 @@ package com.marvastsi.ibgewrapper.services.cidade;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.marvastsi.ibgewrapper.gateway.feign.CidadeClient;
@@ -13,9 +14,12 @@ import feign.gson.GsonDecoder;
 @Service
 public class ConsultaCidadeService {
 
+	@Cacheable("cidade")
 	public List<CidadeJson> execute(String uf) {
-		CidadeClient client = Feign.builder().decoder(new GsonDecoder()).target(CidadeClient.class,
-				"https://servicodados.ibge.gov.br");
+		CidadeClient client = Feign.builder()
+				.decoder(new GsonDecoder())
+				.target(CidadeClient.class, "https://servicodados.ibge.gov.br");
+
 		return client.get(uf);
 	}
 }

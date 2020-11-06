@@ -1,6 +1,4 @@
-package com.marvastsi.ibgewrapper.gateway.http;
-
-import java.util.List;
+package com.marvastsi.ibgeservice.gateway.resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,10 +6,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.marvastsi.ibgewrapper.gateway.json.CidadeJson;
-import com.marvastsi.ibgewrapper.gateway.json.EstadoJson;
-import com.marvastsi.ibgewrapper.services.cidade.ConsultaCidadeService;
-import com.marvastsi.ibgewrapper.services.estado.ConsultaEstadoService;
+import com.marvastsi.ibgeservice.gateway.json.CidadeList;
+import com.marvastsi.ibgeservice.gateway.json.EstadoList;
+import com.marvastsi.ibgeservice.services.cidade.ConsultaCidadeService;
+import com.marvastsi.ibgeservice.services.estado.ConsultaEstadoService;
 
 @RestController
 @RequestMapping("/estados")
@@ -21,18 +19,18 @@ public class EstadoResource {
 	private final ConsultaCidadeService consultaCidadeService;
 
 	@Autowired
-	public EstadoResource(ConsultaEstadoService consultaEstadoService, ConsultaCidadeService consultaCidadeService) {
+	public EstadoResource(ConsultaEstadoService consultaEstadoService, ConsultaCidadeService consultarCidadeService) {
 		this.consultaEstadoService = consultaEstadoService;
-		this.consultaCidadeService = consultaCidadeService;
+		this.consultaCidadeService = consultarCidadeService;
 	}
 
 	@GetMapping
-	public List<EstadoJson> consultar() {
+	public EstadoList consultarEstados() throws Exception {
 		return consultaEstadoService.execute();
 	}
 
 	@GetMapping("/{uf}/cidades")
-	public List<CidadeJson> consultar(@PathVariable("uf") String idUf) {
+	public CidadeList consultarCidades(@PathVariable("uf") String idUf) throws Exception {
 		return consultaCidadeService.execute(idUf);
 	}
 
